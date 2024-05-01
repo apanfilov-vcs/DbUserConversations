@@ -25,6 +25,7 @@ namespace DbUserConversations.Services
                 var user = new User(name);
                 
                 await _dbContext.Users.AddAsync(user);
+                await _dbContext.SaveChangesAsync();
 
                 serviceResponse.Data = user;
                 serviceResponse.Message = $"Successfully added user '{name}' to database.";

@@ -16,13 +16,13 @@ namespace DbUserConversations.Services
             _dbContext = dbContext;
         }
 
-        public async Task<ServiceResponse<Conversation>> AddConversation(HashSet<string> userIds)
+        public async Task<ServiceResponse<Conversation>> AddConversation(List<string> userIds)
         {
             var serviceResponse = new ServiceResponse<Conversation>();
 
             try
             {
-                var dbUsers = new HashSet<User>();
+                var dbUsers = new List<User>();
 
                 foreach (string userId in userIds)
                 {
@@ -36,9 +36,10 @@ namespace DbUserConversations.Services
                     dbUsers.Add(dbUser);
                 }
 
-                var dbConversation = new Conversation("New Conversation", dbUsers);
+                var dbConversation = new Conversation("New Conversation");
 
                 _dbContext.Conversations.Add(dbConversation);
+                dbConversation.Users = dbUsers;
 
                 await _dbContext.SaveChangesAsync();
 

@@ -10,6 +10,6 @@ namespace DbUserConversations.Services
     {
         Task<ServiceResponse<List<Conversation>>> GetConversations();
         Task<ServiceResponse<Conversation>> GetConversationById(string id);
-        Task<ServiceResponse<Conversation>> AddConversation(HashSet<string> userIds);
+        Task<ServiceResponse<Conversation>> AddConversation(List<string> userIds);
     }
 }
