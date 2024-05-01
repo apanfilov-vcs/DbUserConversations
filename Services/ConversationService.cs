@@ -16,34 +16,27 @@ namespace DbUserConversations.Services
             _dbContext = dbContext;
         }
 
-        public async Task<ServiceResponse<Conversation>> AddConversation(List<string> userIds)
+        public async Task<ServiceResponse<string>> AddConversation(string userId)
         {
-            var serviceResponse = new ServiceResponse<Conversation>();
+            var serviceResponse = new ServiceResponse<string>();
 
             try
             {
-                var dbUsers = new List<User>();
-
-                foreach (string userId in userIds)
+                var dbUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                
+                if (dbUser is null)
                 {
-                    var dbUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-                    if (dbUser is null)
-                    {
-                        throw new Exception($"User with id '{userId}' not found.");
-                    }
-
-                    dbUsers.Add(dbUser);
+                    throw new Exception($"User with id '{userId}' not found.");
                 }
 
                 var dbConversation = new Conversation("New Conversation");
 
                 _dbContext.Conversations.Add(dbConversation);
-                dbConversation.Users = dbUsers;
+                dbConversation.Users.Add(dbUser);
 
                 await _dbContext.SaveChangesAsync();
 
-                serviceResponse.Data = dbConversation;
+                serviceResponse.Data = dbConversation.Id;
                 serviceResponse.Message = $"Successfully added new conversation to database";
             }
             catch (Exception ex)

@@ -45,9 +45,9 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpPost("AddConversation")]
-        public async Task<ActionResult<ServiceResponse<Conversation>>> AddConversation(List<string> userIds)
+        public async Task<ActionResult<ServiceResponse<string>>> AddConversation(string userId)
         {
-            var serviceRequest = await _conversationService.AddConversation(userIds);
+            var serviceRequest = await _conversationService.AddConversation(userId);
             
             if (serviceRequest.Success is false)
             {

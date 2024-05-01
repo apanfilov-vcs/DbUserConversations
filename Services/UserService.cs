@@ -16,18 +16,18 @@ namespace DbUserConversations.Services
             _dbContext = dbContext;
         }
 
-        public async Task<ServiceResponse<User>> AddUser(string name)
+        public async Task<ServiceResponse<string>> AddUser(string name)
         {
-            var serviceResponse = new ServiceResponse<User>();
+            var serviceResponse = new ServiceResponse<string>();
 
             try
             {
                 var user = new User(name);
                 
-                await _dbContext.Users.AddAsync(user);
+                _dbContext.Users.Add(user);
                 await _dbContext.SaveChangesAsync();
 
-                serviceResponse.Data = user;
+                serviceResponse.Data = user.Id;
                 serviceResponse.Message = $"Successfully added user '{name}' to database.";
             }
             catch (Exception ex)
