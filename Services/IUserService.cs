@@ -11,5 +11,7 @@ namespace DbUserConversations.Services
         Task<ServiceResponse<List<User>>> GetUsers();
         Task<ServiceResponse<User>> GetUserById(string id);
         Task<ServiceResponse<string>> AddUser(string name);
+        Task<ServiceResponse<User>> UpdateUserNameById(string id, string name);
+        Task<ServiceResponse<User>> DeleteUserById(string id);
     }
 }

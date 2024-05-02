@@ -48,6 +48,37 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<Conversation>> DeleteConversationById(string id)
+        {
+            var serviceResponse = new ServiceResponse<Conversation>();
+
+            try
+            {
+                var dbConversation = await _dbContext.Conversations.FirstOrDefaultAsync(c => c.Id == id);
+
+                if (dbConversation is null)
+                {
+                    throw new Exception($"Conversation with id '{id}' not found.");
+                }
+
+                serviceResponse.Data = dbConversation;
+                serviceResponse.Message = $"Found conversation with id '{id}'.";
+
+                _dbContext.Conversations.Remove(dbConversation);
+
+                await _dbContext.SaveChangesAsync();
+
+                serviceResponse.Message += " Conversation has been deleted.";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<Conversation>> GetConversationById(string id)
         {
             var serviceResponse = new ServiceResponse<Conversation>();
@@ -88,6 +119,35 @@ namespace DbUserConversations.Services
 
                 serviceResponse.Data = dbConversations;
                 serviceResponse.Message = "Successfully fetched conversations from database.";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<Conversation>> UpdateConversationNameById(string id, string name)
+        {
+            var serviceResponse = new ServiceResponse<Conversation>();
+
+            try
+            {
+                var dbConversation = await _dbContext.Conversations.FirstOrDefaultAsync(c => c.Id == id);
+
+                if (dbConversation is null)
+                {
+                    throw new Exception($"Conversation with id '{id}' not found.");
+                }
+
+                dbConversation.Name = name;
+
+                await _dbContext.SaveChangesAsync();
+
+                serviceResponse.Data = dbConversation;
+                serviceResponse.Message = $"Changed name of conversation with id '{id}'.";
             }
             catch (Exception ex)
             {

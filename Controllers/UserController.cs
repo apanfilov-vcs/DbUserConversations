@@ -56,5 +56,31 @@ namespace DbUserConversations.Controllers
 
             return Ok(serviceRequest);
         }
+
+        [HttpPut("UpdateUserNameById")]
+        public async Task<ActionResult<ServiceResponse<User>>> UpdateUserNameById(string id, string name)
+        {
+            var serviceRequest = await _userService.UpdateUserNameById(id, name);
+
+            if (serviceRequest.Success is false)
+            {
+                return NotFound(serviceRequest);
+            }
+
+            return Ok(serviceRequest);
+        }
+
+        [HttpDelete("DeleteUserById")]
+        public async Task<ActionResult<ServiceResponse<User>>> DeleteUserById(string id)
+        {
+            var serviceRequest = await _userService.DeleteUserById(id);
+
+            if (serviceRequest.Success is false)
+            {
+                return NotFound(serviceRequest);
+            }
+
+            return Ok(serviceRequest);
+        }
     }
 }
