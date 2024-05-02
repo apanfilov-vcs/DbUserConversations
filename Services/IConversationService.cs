@@ -11,7 +11,9 @@ namespace DbUserConversations.Services
         Task<ServiceResponse<List<Conversation>>> GetConversations();
         Task<ServiceResponse<Conversation>> GetConversationById(string id);
         Task<ServiceResponse<string>> AddConversation(string userId);
+        Task<ServiceResponse<string>> AddUserToConversationById(string conversationId, string userId);
         Task<ServiceResponse<Conversation>> UpdateConversationNameById(string id, string name);
+        Task<ServiceResponse<string>> RemoveUserFromConversationById(string conversationId, string userId);
         Task<ServiceResponse<Conversation>> DeleteConversationById(string id);
     }
 }

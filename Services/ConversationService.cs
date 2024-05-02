@@ -48,6 +48,50 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<string>> AddUserToConversationById(string conversationId, string userId)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+
+            try
+            {
+                var dbConversation = await _dbContext.Conversations
+                    .Include(c => c.Users)
+                    .FirstOrDefaultAsync(c => c.Id == conversationId);
+
+                if (dbConversation is null)
+                {
+                    throw new Exception($"Conversation with id '{conversationId}' not found.");
+                }
+
+                var dbUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+                if (dbUser is null)
+                {
+                    throw new Exception($"User with id '{userId}' not found.");
+                }
+
+                if (dbConversation.Users.Contains(dbUser))
+                {
+                    throw new Exception($"Conversation with id '{conversationId}' already contains user with id '{userId}'.");
+                }
+
+                dbConversation.Users.Add(dbUser);
+                dbUser.Conversations.Add(dbConversation);
+
+                await _dbContext.SaveChangesAsync();
+
+                serviceResponse.Data = dbConversation.Id;
+                serviceResponse.Message = $"Successfully added user with id '{userId}' to conversation with id '{conversationId}'.";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<Conversation>> DeleteConversationById(string id)
         {
             var serviceResponse = new ServiceResponse<Conversation>();
@@ -119,6 +163,54 @@ namespace DbUserConversations.Services
 
                 serviceResponse.Data = dbConversations;
                 serviceResponse.Message = "Successfully fetched conversations from database.";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<string>> RemoveUserFromConversationById(string conversationId, string userId)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+
+            try
+            {
+                var dbConversation = await _dbContext.Conversations
+                    .Include(c => c.Users)
+                    .FirstOrDefaultAsync(c => c.Id == conversationId);
+
+                if (dbConversation is null)
+                {
+                    throw new Exception($"Conversation with id '{conversationId}' not found.");
+                }
+
+                var dbUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+                if (dbUser is null)
+                {
+                    throw new Exception($"User with id '{userId}' not found.");
+                }
+
+                if (dbConversation.Users.Contains(dbUser) is false)
+                {
+                    throw new Exception($"Conversation with id '{conversationId}' does not contain user with id '{userId}'.");
+                }
+
+                dbConversation.Users.Remove(dbUser);
+
+                if (dbConversation.Users.Count == 0)
+                {
+                    _dbContext.Conversations.Remove(dbConversation);
+                }
+
+                await _dbContext.SaveChangesAsync();
+
+                serviceResponse.Data = dbConversation.Id;
+                serviceResponse.Message = $"Successfully removed user with id '{userId}' from conversation with id '{conversationId}'.";
             }
             catch (Exception ex)
             {
