@@ -16,6 +16,7 @@ namespace DbUserConversations.Models
         public HashSet<Conversation> Conversations { get; set; } = new HashSet<Conversation>();
 
         #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public User() { }
         public User(string name)
         {
             Name = name;
