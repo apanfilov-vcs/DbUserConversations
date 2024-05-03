@@ -14,6 +14,8 @@ namespace DbUserConversations.Models
         public string Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public List<Conversation> Conversations { get; set; } = new List<Conversation>();
+        public byte[] PasswordHash { get; set; } = new byte[0];
+        public byte[] PasswordSalt { get; set; } = new byte[0];
 
         #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public User() { }
