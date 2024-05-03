@@ -16,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
 });
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IConversationService, ConversationService>();
+builder.Services.AddTransient<IPasswordService, PasswordService>();
 
 var app = builder.Build();
 
