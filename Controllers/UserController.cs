@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DbUserConversations.DTOs;
 using DbUserConversations.Models;
 using DbUserConversations.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<User>>>> GetUsers()
+        public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> GetUsers()
         {
             var serviceRequest = await _userService.GetUsers();
 
@@ -32,7 +33,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<User>>> GetUserById(string id)
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetUserById(string id)
         {
             var serviceRequest = await _userService.GetUserById(id);
 
@@ -45,7 +46,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpPost("AddUser")]
-        public async Task<ActionResult<ServiceResponse<User>>> AddUser(string name)
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> AddUser(string name)
         {
             var serviceRequest = await _userService.AddUser(name);
 
@@ -58,7 +59,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpPut("UpdateUserNameById")]
-        public async Task<ActionResult<ServiceResponse<User>>> UpdateUserNameById(string id, string name)
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUserNameById(string id, string name)
         {
             var serviceRequest = await _userService.UpdateUserNameById(id, name);
 
@@ -71,7 +72,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpDelete("DeleteUserById")]
-        public async Task<ActionResult<ServiceResponse<User>>> DeleteUserById(string id)
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUserById(string id)
         {
             var serviceRequest = await _userService.DeleteUserById(id);
 

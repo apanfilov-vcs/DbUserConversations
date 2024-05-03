@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "sx3op9h/HAAmidxrOUZT+uwhCen8eciQJfsqtKaDCpheRiZcC7i+2txc8V18K9r6cgjqcNvpsYdntrOXkpI3QA==",
+  "dgSpecHash": "oDtuZt5bJsbPHBPv7mSGuUmUBHeZMAaFkiocLf8bsLVCJv6SRtXg6DC/s0rFZ1pyD+medRgh5Sr7HciM6kEgKw==",
   "success": true,
   "projectFilePath": "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj",
   "expectedPackageFiles": [
+    "/Users/apanfilov/.nuget/packages/automapper/13.0.1/automapper.13.0.1.nupkg.sha512",
     "/Users/apanfilov/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/apanfilov/.nuget/packages/microsoft.bcl.asyncinterfaces/6.0.0/microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "/Users/apanfilov/.nuget/packages/microsoft.codeanalysis.analyzers/3.3.3/microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",

@@ -5,20 +5,24 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DbUserConversations.Data;
 using DbUserConversations.Models;
+using DbUserConversations.DTOs;
+using AutoMapper;
 
 namespace DbUserConversations.Services
 {
     public class ConversationService : IConversationService
     {
         private readonly ApplicationDbContext _dbContext;
-        public ConversationService(ApplicationDbContext dbContext)
+        private readonly IMapper _mapper;
+        public ConversationService(ApplicationDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<string>> AddConversation(string userId)
+        public async Task<ServiceResponse<GetConversationDto>> AddConversation(string userId)
         {
-            var serviceResponse = new ServiceResponse<string>();
+            var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
@@ -36,7 +40,7 @@ namespace DbUserConversations.Services
 
                 await _dbContext.SaveChangesAsync();
 
-                serviceResponse.Data = dbConversation.Id;
+                serviceResponse.Data = _mapper.Map<GetConversationDto>(dbConversation);
                 serviceResponse.Message = $"Successfully added new conversation to database";
             }
             catch (Exception ex)
@@ -48,9 +52,9 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<string>> AddUserToConversationById(string conversationId, string userId)
+        public async Task<ServiceResponse<GetConversationDto>> AddUserToConversationById(string conversationId, string userId)
         {
-            var serviceResponse = new ServiceResponse<string>();
+            var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
@@ -80,7 +84,7 @@ namespace DbUserConversations.Services
 
                 await _dbContext.SaveChangesAsync();
 
-                serviceResponse.Data = dbConversation.Id;
+                serviceResponse.Data = _mapper.Map<GetConversationDto>(dbConversation);
                 serviceResponse.Message = $"Successfully added user with id '{userId}' to conversation with id '{conversationId}'.";
             }
             catch (Exception ex)
@@ -92,20 +96,22 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<Conversation>> DeleteConversationById(string id)
+        public async Task<ServiceResponse<GetConversationDto>> DeleteConversationById(string id)
         {
-            var serviceResponse = new ServiceResponse<Conversation>();
+            var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
-                var dbConversation = await _dbContext.Conversations.FirstOrDefaultAsync(c => c.Id == id);
+                var dbConversation = await _dbContext.Conversations
+                    .Include(c => c.Users)
+                    .FirstOrDefaultAsync(c => c.Id == id);
 
                 if (dbConversation is null)
                 {
                     throw new Exception($"Conversation with id '{id}' not found.");
                 }
 
-                serviceResponse.Data = dbConversation;
+                serviceResponse.Data = _mapper.Map<GetConversationDto>(dbConversation);
                 serviceResponse.Message = $"Found conversation with id '{id}'.";
 
                 _dbContext.Conversations.Remove(dbConversation);
@@ -123,20 +129,22 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<Conversation>> GetConversationById(string id)
+        public async Task<ServiceResponse<GetConversationDto>> GetConversationById(string id)
         {
-            var serviceResponse = new ServiceResponse<Conversation>();
+            var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
-                var dbConversation = await _dbContext.Conversations.FirstOrDefaultAsync(c => c.Id == id);
+                var dbConversation = await _dbContext.Conversations
+                    .Include(c => c.Users)
+                    .FirstOrDefaultAsync(c => c.Id == id);
 
                 if (dbConversation is null)
                 {
                     throw new Exception($"Conversation with id '{id}' not found.");
                 }
 
-                serviceResponse.Data = dbConversation;
+                serviceResponse.Data = _mapper.Map<GetConversationDto>(dbConversation);
                 serviceResponse.Message = "Successfully fetched conversation from database.";
             }
             catch (Exception ex)
@@ -148,20 +156,22 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<Conversation>>> GetConversations()
+        public async Task<ServiceResponse<List<GetConversationDto>>> GetConversations()
         {
-            var serviceResponse = new ServiceResponse<List<Conversation>>();
+            var serviceResponse = new ServiceResponse<List<GetConversationDto>>();
 
             try
             {
-                var dbConversations = await _dbContext.Conversations.ToListAsync();
+                var dbConversations = await _dbContext.Conversations
+                    .Include(c => c.Users)
+                    .ToListAsync();
 
                 if (dbConversations is null)
                 {
                     throw new Exception("Unable to fetch conversations from database.");
                 }
 
-                serviceResponse.Data = dbConversations;
+                serviceResponse.Data = dbConversations.Select(c => _mapper.Map<GetConversationDto>(c)).ToList();
                 serviceResponse.Message = "Successfully fetched conversations from database.";
             }
             catch (Exception ex)
@@ -173,9 +183,9 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<string>> RemoveUserFromConversationById(string conversationId, string userId)
+        public async Task<ServiceResponse<GetConversationDto>> RemoveUserFromConversationById(string conversationId, string userId)
         {
-            var serviceResponse = new ServiceResponse<string>();
+            var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
@@ -209,7 +219,7 @@ namespace DbUserConversations.Services
 
                 await _dbContext.SaveChangesAsync();
 
-                serviceResponse.Data = dbConversation.Id;
+                serviceResponse.Data = _mapper.Map<GetConversationDto>(dbConversation);
                 serviceResponse.Message = $"Successfully removed user with id '{userId}' from conversation with id '{conversationId}'.";
             }
             catch (Exception ex)
@@ -221,13 +231,15 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<Conversation>> UpdateConversationNameById(string id, string name)
+        public async Task<ServiceResponse<GetConversationDto>> UpdateConversationNameById(string id, string name)
         {
-            var serviceResponse = new ServiceResponse<Conversation>();
+            var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
-                var dbConversation = await _dbContext.Conversations.FirstOrDefaultAsync(c => c.Id == id);
+                var dbConversation = await _dbContext.Conversations
+                    .Include(c => c.Users)
+                    .FirstOrDefaultAsync(c => c.Id == id);
 
                 if (dbConversation is null)
                 {
@@ -238,7 +250,7 @@ namespace DbUserConversations.Services
 
                 await _dbContext.SaveChangesAsync();
 
-                serviceResponse.Data = dbConversation;
+                serviceResponse.Data = _mapper.Map<GetConversationDto>(dbConversation);
                 serviceResponse.Message = $"Changed name of conversation with id '{id}'.";
             }
             catch (Exception ex)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DbUserConversations.DTOs;
 using DbUserConversations.Models;
 using DbUserConversations.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<Conversation>>>> GetConversations()
+        public async Task<ActionResult<ServiceResponse<List<GetConversationDto>>>> GetConversations()
         {
             var serviceRequest = await _conversationService.GetConversations();
 
@@ -32,7 +33,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<Conversation>>> GetConversationById(string id)
+        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> GetConversationById(string id)
         {
             var serviceRequest = await _conversationService.GetConversationById(id);
 
@@ -45,7 +46,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpPost("AddConversation")]
-        public async Task<ActionResult<ServiceResponse<string>>> AddConversation(string userId)
+        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> AddConversation(string userId)
         {
             var serviceRequest = await _conversationService.AddConversation(userId);
             
@@ -58,7 +59,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpPost("AddUserToConversationById")]
-        public async Task<ActionResult<ServiceResponse<Conversation>>> AddUserToConversationById(string conversationId, string userId)
+        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> AddUserToConversationById(string conversationId, string userId)
         {
             var serviceRequest = await _conversationService.AddUserToConversationById(conversationId, userId);
 
@@ -71,7 +72,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpPut("UpdateConversationById")]
-        public async Task<ActionResult<ServiceResponse<Conversation>>> UpdateConverationNameById(string id, string name)
+        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> UpdateConverationNameById(string id, string name)
         {
             var serviceRequest = await _conversationService.UpdateConversationNameById(id, name);
 
@@ -84,7 +85,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpDelete("RemoveUserFromConversationById")]
-        public async Task<ActionResult<ServiceResponse<Conversation>>> RemoveUserFromConversationById(string conversationId, string userId)
+        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> RemoveUserFromConversationById(string conversationId, string userId)
         {
             var serviceRequest = await _conversationService.RemoveUserFromConversationById(conversationId, userId);
 
@@ -97,7 +98,7 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpDelete("DeleteConversationById")]
-        public async Task<ActionResult<ServiceResponse<Conversation>>> DeleteConversationById(string id)
+        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> DeleteConversationById(string id)
         {
             var serviceRequest = await _conversationService.DeleteConversationById(id);
 
