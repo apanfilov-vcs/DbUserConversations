@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DbUserConversations.Common;
 using DbUserConversations.DTOs;
 using DbUserConversations.Models;
 using DbUserConversations.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DbUserConversations.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -45,6 +48,19 @@ namespace DbUserConversations.Controllers
             return Ok(serviceRequest);
         }
 
+        [HttpGet("GetLoggedInUser")]
+        public async Task<ActionResult<ServiceResponse<GetUserConversationDto>>> GetLoggedInUser()
+        {
+            var serviceRequest = await _userService.GetLoggedInUser(User);
+
+            if (serviceRequest.Success is false)
+            {
+                return NotFound(serviceRequest);
+            }
+
+            return Ok(serviceRequest);
+        }
+
         // Due to adding registration to api, the AddUser action on the UserController has been disabled.
 
         // [HttpPost("AddUser")]
@@ -63,7 +79,7 @@ namespace DbUserConversations.Controllers
         [HttpPut("UpdateUserNameById")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUserNameById(string id, string name)
         {
-            var serviceRequest = await _userService.UpdateUserNameById(id, name);
+            var serviceRequest = await _userService.UpdateUserNameById(User, id, name);
 
             if (serviceRequest.Success is false)
             {
@@ -76,7 +92,7 @@ namespace DbUserConversations.Controllers
         [HttpDelete("DeleteUserById")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUserById(string id)
         {
-            var serviceRequest = await _userService.DeleteUserById(id);
+            var serviceRequest = await _userService.DeleteUserById(User, id);
 
             if (serviceRequest.Success is false)
             {
