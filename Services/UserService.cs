@@ -116,7 +116,6 @@ namespace DbUserConversations.Services
             try
             {
                 var dbUser = await _dbContext.Users
-                    .Include(u => u.Conversations)
                     .FirstOrDefaultAsync(u => u.Id == id);
 
                 if (dbUser is null)
@@ -143,7 +142,6 @@ namespace DbUserConversations.Services
             try
             {
                 var dbUsers = await _dbContext.Users
-                    .Include(u => u.Conversations)
                     .ToListAsync();
 
                 if (dbUsers is null)
