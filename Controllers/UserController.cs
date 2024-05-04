@@ -62,6 +62,7 @@ namespace DbUserConversations.Controllers
         }
 
         // Due to adding registration to api, the AddUser action on the UserController has been disabled.
+        // Only enable it on an admin features controller.
 
         // [HttpPost("AddUser")]
         // public async Task<ActionResult<ServiceResponse<GetUserDto>>> AddUser(string name)

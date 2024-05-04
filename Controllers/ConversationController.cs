@@ -97,17 +97,20 @@ namespace DbUserConversations.Controllers
             return Ok(serviceRequest);
         }
 
-        [HttpDelete("DeleteConversationById")]
-        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> DeleteConversationById(string id)
-        {
-            var serviceRequest = await _conversationService.DeleteConversationById(id);
+        // Due to new security implementations, the DeleteConversationById action on ConversationController has been disables.
+        // Only enable it on an admin features controller.
 
-            if (serviceRequest.Success is false)
-            {
-                return NotFound(serviceRequest);
-            }
+        // [HttpDelete("DeleteConversationById")]
+        // public async Task<ActionResult<ServiceResponse<GetConversationDto>>> DeleteConversationById(string id)
+        // {
+        //     var serviceRequest = await _conversationService.DeleteConversationById(id);
 
-            return Ok(serviceRequest);
-        }
+        //     if (serviceRequest.Success is false)
+        //     {
+        //         return NotFound(serviceRequest);
+        //     }
+
+        //     return Ok(serviceRequest);
+        // }
     }
 }
