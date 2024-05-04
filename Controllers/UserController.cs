@@ -45,18 +45,20 @@ namespace DbUserConversations.Controllers
             return Ok(serviceRequest);
         }
 
-        [HttpPost("AddUser")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> AddUser(string name)
-        {
-            var serviceRequest = await _userService.AddUser(name);
+        // Due to adding registration to api, the AddUser action on the UserController has been disabled.
 
-            if (serviceRequest.Success is false)
-            {
-                return BadRequest(serviceRequest);
-            }
+        // [HttpPost("AddUser")]
+        // public async Task<ActionResult<ServiceResponse<GetUserDto>>> AddUser(string name)
+        // {
+        //     var serviceRequest = await _userService.AddUser(name);
 
-            return Ok(serviceRequest);
-        }
+        //     if (serviceRequest.Success is false)
+        //     {
+        //         return BadRequest(serviceRequest);
+        //     }
+
+        //     return Ok(serviceRequest);
+        // }
 
         [HttpPut("UpdateUserNameById")]
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUserNameById(string id, string name)
