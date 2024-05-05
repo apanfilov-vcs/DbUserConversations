@@ -14,5 +14,6 @@ namespace DbUserConversations.Data
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Conversation> Conversations => Set<Conversation>();
+        public DbSet<Message> Messages => Set<Message>();
     }
 }
