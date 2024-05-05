@@ -7,22 +7,27 @@ using System.Threading.Tasks;
 
 namespace DbUserConversations.Models
 {
-    public class User
+    public class Message
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public List<Conversation> Conversations { get; set; } = new List<Conversation>();
-        public List<Message> SentMessages { get; set; } = new List<Message>();
-        public byte[] PasswordHash { get; set; } = new byte[0];
-        public byte[] PasswordSalt { get; set; } = new byte[0];
+        public Conversation ToConversation { get; set; }
+        public User FromUser { get; set; }
+        public string Contents { get; set; } = string.Empty;
+        public DateTime TimeSent { get; set; }
 
         #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public User() { }
-        public User(string name)
+        public Message() 
+        { 
+            TimeSent = DateTime.Now;
+        }
+        public Message(Conversation toConversation, User fromUser, string contents)
         {
-            Name = name;
+            ToConversation = toConversation;
+            FromUser = fromUser;
+            Contents = contents;
+            TimeSent = DateTime.Now;
         }
         #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     }
