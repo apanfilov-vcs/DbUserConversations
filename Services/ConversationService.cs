@@ -173,6 +173,7 @@ namespace DbUserConversations.Services
 
                 var dbConversation = await _dbContext.Conversations
                     .Include(c => c.Users)
+                    .Include(c => c.ReceivedMessages)
                     .FirstOrDefaultAsync(c => c.Id == id);
 
                 if (dbConversation is null)
