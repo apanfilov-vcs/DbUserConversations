@@ -24,7 +24,7 @@ namespace DbUserConversations.Controllers
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<GetConversationDto>>>> GetConversations()
         {
-            var serviceRequest = await _conversationService.GetConversations();
+            var serviceRequest = await _conversationService.GetConversations(User);
 
             if (serviceRequest.Success is false)
             {
@@ -37,7 +37,7 @@ namespace DbUserConversations.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<GetConversationDto>>> GetConversationById(string id)
         {
-            var serviceRequest = await _conversationService.GetConversationById(id);
+            var serviceRequest = await _conversationService.GetConversationById(User, id);
 
             if (serviceRequest.Success is false)
             {
@@ -48,9 +48,9 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpPost("AddConversation")]
-        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> AddConversation(string userId)
+        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> AddConversation()
         {
-            var serviceRequest = await _conversationService.AddConversation(userId);
+            var serviceRequest = await _conversationService.AddConversation(User);
             
             if (serviceRequest.Success is false)
             {
@@ -63,7 +63,7 @@ namespace DbUserConversations.Controllers
         [HttpPost("AddUserToConversationById")]
         public async Task<ActionResult<ServiceResponse<GetConversationDto>>> AddUserToConversationById(string conversationId, string userId)
         {
-            var serviceRequest = await _conversationService.AddUserToConversationById(conversationId, userId);
+            var serviceRequest = await _conversationService.AddUserToConversationById(User, conversationId, userId);
 
             if (serviceRequest.Success is false)
             {
@@ -76,7 +76,7 @@ namespace DbUserConversations.Controllers
         [HttpPut("UpdateConversationById")]
         public async Task<ActionResult<ServiceResponse<GetConversationDto>>> UpdateConverationNameById(string id, string name)
         {
-            var serviceRequest = await _conversationService.UpdateConversationNameById(id, name);
+            var serviceRequest = await _conversationService.UpdateConversationNameById(User, id, name);
 
             if (serviceRequest.Success is false)
             {
@@ -87,9 +87,9 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpDelete("RemoveUserFromConversationById")]
-        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> RemoveUserFromConversationById(string conversationId, string userId)
+        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> RemoveUserFromConversationById(string conversationId)
         {
-            var serviceRequest = await _conversationService.RemoveUserFromConversationById(conversationId, userId);
+            var serviceRequest = await _conversationService.RemoveUserFromConversationById(User, conversationId);
 
             if (serviceRequest.Success is false)
             {

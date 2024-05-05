@@ -7,6 +7,7 @@ using DbUserConversations.Data;
 using DbUserConversations.Models;
 using DbUserConversations.DTOs;
 using AutoMapper;
+using System.Security.Claims;
 
 namespace DbUserConversations.Services
 {
@@ -20,12 +21,13 @@ namespace DbUserConversations.Services
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<GetConversationDto>> AddConversation(string userId)
+        public async Task<ServiceResponse<GetConversationDto>> AddConversation(ClaimsPrincipal claimsPrincipal)
         {
             var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
+                var userId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
                 var dbUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
                 
                 if (dbUser is null)
@@ -52,12 +54,20 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetConversationDto>> AddUserToConversationById(string conversationId, string userId)
+        public async Task<ServiceResponse<GetConversationDto>> AddUserToConversationById(ClaimsPrincipal claimsPrincipal, string conversationId, string userId)
         {
             var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
+                var claimId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+                var claimUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == claimId);
+
+                if (claimUser is null)
+                {
+                    throw new Exception($"User with id '{claimId}' not found.");
+                }
+
                 var dbConversation = await _dbContext.Conversations
                     .Include(c => c.Users)
                     .FirstOrDefaultAsync(c => c.Id == conversationId);
@@ -65,6 +75,11 @@ namespace DbUserConversations.Services
                 if (dbConversation is null)
                 {
                     throw new Exception($"Conversation with id '{conversationId}' not found.");
+                }
+
+                if (dbConversation.Users.Contains(claimUser) is false)
+                {
+                    throw new Exception($"User with id '{claimId}' is not part of conversation with id '{dbConversation.Id}'.");
                 }
 
                 var dbUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -96,12 +111,20 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetConversationDto>> DeleteConversationById(string id)
+        public async Task<ServiceResponse<GetConversationDto>> DeleteConversationById(ClaimsPrincipal claimsPrincipal, string id)
         {
             var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
+                var claimId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+                var claimUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == claimId);
+
+                if (claimUser is null)
+                {
+                    throw new Exception($"User with id '{claimId}' not found.");
+                }
+
                 var dbConversation = await _dbContext.Conversations
                     .Include(c => c.Users)
                     .FirstOrDefaultAsync(c => c.Id == id);
@@ -109,6 +132,11 @@ namespace DbUserConversations.Services
                 if (dbConversation is null)
                 {
                     throw new Exception($"Conversation with id '{id}' not found.");
+                }
+
+                if (dbConversation.Users.Contains(claimUser) is false)
+                {
+                    throw new Exception($"Conversation with id '{dbConversation.Id}' does not contain user with id '{claimId}'.");
                 }
 
                 serviceResponse.Data = _mapper.Map<GetConversationDto>(dbConversation);
@@ -129,12 +157,20 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetConversationDto>> GetConversationById(string id)
+        public async Task<ServiceResponse<GetConversationDto>> GetConversationById(ClaimsPrincipal claimsPrincipal, string id)
         {
             var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
+                var claimId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+                var claimUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == claimId);
+
+                if (claimUser is null)
+                {
+                    throw new Exception($"User with id '{claimId}' not found.");
+                }
+
                 var dbConversation = await _dbContext.Conversations
                     .Include(c => c.Users)
                     .FirstOrDefaultAsync(c => c.Id == id);
@@ -142,6 +178,11 @@ namespace DbUserConversations.Services
                 if (dbConversation is null)
                 {
                     throw new Exception($"Conversation with id '{id}' not found.");
+                }
+
+                if (dbConversation.Users.Contains(claimUser) is false)
+                {
+                    throw new Exception($"Conversation with id '{id}' does not contain user with id '{claimId}'.");
                 }
 
                 serviceResponse.Data = _mapper.Map<GetConversationDto>(dbConversation);
@@ -156,15 +197,24 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetConversationDto>>> GetConversations()
+        public async Task<ServiceResponse<List<GetConversationDto>>> GetConversations(ClaimsPrincipal claimsPrincipal)
         {
             var serviceResponse = new ServiceResponse<List<GetConversationDto>>();
 
             try
             {
-                var dbConversations = await _dbContext.Conversations
-                    .Include(c => c.Users)
-                    .ToListAsync();
+                var claimId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+                var claimUser = await _dbContext.Users
+                    .Include(u => u.Conversations)
+                    .ThenInclude(c => c.Users)
+                    .FirstOrDefaultAsync(u => u.Id == claimId);
+
+                if (claimUser is null)
+                {
+                    throw new Exception($"User with id '{claimId}' not found.");
+                }
+
+                var dbConversations = claimUser.Conversations.ToList();
 
                 if (dbConversations is null)
                 {
@@ -183,12 +233,20 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetConversationDto>> RemoveUserFromConversationById(string conversationId, string userId)
+        public async Task<ServiceResponse<GetConversationDto>> RemoveUserFromConversationById(ClaimsPrincipal claimsPrincipal, string conversationId)
         {
             var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
+                var claimId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+                var claimUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == claimId);
+
+                if (claimUser is null)
+                {
+                    throw new Exception($"User with id '{claimId}' not found.");
+                }
+
                 var dbConversation = await _dbContext.Conversations
                     .Include(c => c.Users)
                     .FirstOrDefaultAsync(c => c.Id == conversationId);
@@ -198,19 +256,12 @@ namespace DbUserConversations.Services
                     throw new Exception($"Conversation with id '{conversationId}' not found.");
                 }
 
-                var dbUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-                if (dbUser is null)
+                if (dbConversation.Users.Contains(claimUser) is false)
                 {
-                    throw new Exception($"User with id '{userId}' not found.");
+                    throw new Exception($"Conversation with id '{conversationId}' does not contain user with id '{claimId}'.");
                 }
 
-                if (dbConversation.Users.Contains(dbUser) is false)
-                {
-                    throw new Exception($"Conversation with id '{conversationId}' does not contain user with id '{userId}'.");
-                }
-
-                dbConversation.Users.Remove(dbUser);
+                dbConversation.Users.Remove(claimUser);
 
                 if (dbConversation.Users.Count == 0)
                 {
@@ -220,7 +271,7 @@ namespace DbUserConversations.Services
                 await _dbContext.SaveChangesAsync();
 
                 serviceResponse.Data = _mapper.Map<GetConversationDto>(dbConversation);
-                serviceResponse.Message = $"Successfully removed user with id '{userId}' from conversation with id '{conversationId}'.";
+                serviceResponse.Message = $"Successfully removed user with id '{claimId}' from conversation with id '{conversationId}'.";
             }
             catch (Exception ex)
             {
@@ -231,12 +282,20 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetConversationDto>> UpdateConversationNameById(string id, string name)
+        public async Task<ServiceResponse<GetConversationDto>> UpdateConversationNameById(ClaimsPrincipal claimsPrincipal, string id, string name)
         {
             var serviceResponse = new ServiceResponse<GetConversationDto>();
 
             try
             {
+                var claimId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+                var claimUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == claimId);
+
+                if (claimUser is null)
+                {
+                    throw new Exception($"User with id '{claimId}' not found.");
+                }
+
                 var dbConversation = await _dbContext.Conversations
                     .Include(c => c.Users)
                     .FirstOrDefaultAsync(c => c.Id == id);
@@ -244,6 +303,11 @@ namespace DbUserConversations.Services
                 if (dbConversation is null)
                 {
                     throw new Exception($"Conversation with id '{id}' not found.");
+                }
+
+                if (dbConversation.Users.Contains(claimUser) is false)
+                {
+                    throw new Exception($"Conversation with id '{id}' does not contain user with id '{claimId}'."); 
                 }
 
                 dbConversation.Name = name;
