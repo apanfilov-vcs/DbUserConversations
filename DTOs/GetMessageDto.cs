@@ -11,8 +11,8 @@ namespace DbUserConversations.DTOs
     public class GetMessageDto
     {
         public string? Id { get; set; }
-        public Conversation? ToConversation { get; set; }
-        public User? FromUser { get; set; }
+        public GetMessageConversationDto? ToConversation { get; set; }
+        public GetMessageUserDto? FromUser { get; set; }
         public string? Contents { get; set; }
         public DateTime? TimeSent { get; set; }
     }
