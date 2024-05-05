@@ -14,9 +14,12 @@ namespace DbUserConversations
         {
             CreateMap<Conversation, GetConversationDto>();
             CreateMap<User, GetUserDto>();
+            CreateMap<Message, GetMessageDto>();
 
             CreateMap<User, GetConversationUserDto>();
             CreateMap<Conversation, GetUserConversationDto>();
+            CreateMap<User, GetMessageUserDto>();
+            CreateMap<Conversation, GetMessageConversationDto>();
         }
     }
 }

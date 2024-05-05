@@ -11,5 +11,6 @@ namespace DbUserConversations.DTOs
         public string? Id { get; set; }
         public string? Name { get; set; }
         public List<GetConversationUserDto>? Users { get; set; }
+        public List<GetMessageDto>? Messages { get; set; }
     }
 }
