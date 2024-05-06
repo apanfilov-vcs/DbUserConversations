@@ -120,7 +120,7 @@ namespace DbUserConversations.Services
 
         public async Task<ServiceResponse<GetMessageDto>> UpdateMessage(ClaimsPrincipal claimsPrincipal, string messageId, string message)
         {
-            var serviceResponse = new ServiceResponse<GetMessageDto>();
+            var serviceResponse = new ServiceResponse<GetMessageDto>(); //
 
             try
             {
