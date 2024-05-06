@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\cygwin64\\home\\snowy\\source\\DbUserConversations\\DbUserConversations.csproj": {}
+    "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj": {}
   },
   "projects": {
-    "C:\\cygwin64\\home\\snowy\\source\\DbUserConversations\\DbUserConversations.csproj": {
+    "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\cygwin64\\home\\snowy\\source\\DbUserConversations\\DbUserConversations.csproj",
+        "projectUniqueName": "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj",
         "projectName": "DbUserConversations",
-        "projectPath": "C:\\cygwin64\\home\\snowy\\source\\DbUserConversations\\DbUserConversations.csproj",
-        "packagesPath": "C:\\Users\\snowy\\.nuget\\packages\\",
-        "outputPath": "C:\\cygwin64\\home\\snowy\\source\\DbUserConversations\\obj\\",
+        "projectPath": "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj",
+        "packagesPath": "/Users/apanfilov/.nuget/packages/",
+        "outputPath": "/Users/apanfilov/source/DbUserConversations/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\snowy\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/apanfilov/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -32,11 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -101,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/Users/apanfilov/dotnet/sdk/8.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
