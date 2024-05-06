@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using DbUserConversations.DTOs;
 using DbUserConversations.Models;
 using DbUserConversations.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DbUserConversations.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class MessageController : ControllerBase
