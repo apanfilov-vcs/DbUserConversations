@@ -11,7 +11,7 @@ namespace DbUserConversations.Services
     public interface IMessageService
     {
         Task<ServiceResponse<GetMessageDto>> SendMessage(ClaimsPrincipal claimsPrincipal, string conversationId, string message);
-        Task<ServiceResponse<GetMessageDto>> UpdateMessage(ClaimsPrincipal claimsPrincipal, string messageId, string message);
+        Task<ServiceResponse<GetMessageDto>> UpdateMessageById(ClaimsPrincipal claimsPrincipal, string messageId, string message);
         Task<ServiceResponse<GetMessageDto>> DeleteMessageById(ClaimsPrincipal claimsPrincipal, string messageId);
     }
 }

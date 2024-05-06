@@ -116,7 +116,7 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetMessageDto>> UpdateMessage(ClaimsPrincipal claimsPrincipal, string messageId, string message)
+        public async Task<ServiceResponse<GetMessageDto>> UpdateMessageById(ClaimsPrincipal claimsPrincipal, string messageId, string message)
         {
             var serviceResponse = new ServiceResponse<GetMessageDto>();
 
