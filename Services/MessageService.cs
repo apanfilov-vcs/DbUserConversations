@@ -28,9 +28,7 @@ namespace DbUserConversations.Services
             try
             {
                 var claimId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
-                var claimUser = await _dbContext.Users
-                    .Include(u => u.SentMessages)
-                    .FirstOrDefaultAsync(u => u.Id == claimId);
+                var claimUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == claimId);
 
                 if (claimUser is null)
                 {
@@ -125,20 +123,24 @@ namespace DbUserConversations.Services
             try
             {
                 var claimId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
-                var claimUser = await _dbContext.Users
-                    .Include(u => u.SentMessages)
-                    .FirstOrDefaultAsync(u => u.Id == claimId);
+                var claimUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == claimId);
 
                 if (claimUser is null)
                 {
                     throw new Exception($"User with id '{claimId}' not found.");
                 }
 
-                var dbMessage = claimUser.SentMessages.FirstOrDefault(m => m.Id == messageId);
+                var dbMessages = await _dbContext.Messages.ToListAsync();
+                var dbMessage = dbMessages.FirstOrDefault(m => m.Id == messageId);
 
                 if (dbMessage is null)
                 {
                     throw new Exception($"Message with id '{messageId}' not found.");
+                }
+
+                if (dbMessage.FromUser.Id != claimId)
+                {
+                    throw new Exception($"Message with id '{messageId}' was not sent by user with id '{claimId}'.");
                 }
 
                 dbMessage.Contents = message;
