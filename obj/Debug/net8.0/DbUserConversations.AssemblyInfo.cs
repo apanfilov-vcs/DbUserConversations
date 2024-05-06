@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DbUserConversations")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34404584013c9f6342a57a20a6292d5e013552d2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1205c7ea98cdce070f3719c190a8580ef8d5fbb9")]
 [assembly: System.Reflection.AssemblyProductAttribute("DbUserConversations")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DbUserConversations")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
