@@ -3384,19 +3384,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/apanfilov/.nuget/packages/": {}
+    "C:\\Users\\snowy\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj",
+      "projectUniqueName": "C:\\cygwin64\\home\\snowy\\source\\DbUserConversations\\DbUserConversations.csproj",
       "projectName": "DbUserConversations",
-      "projectPath": "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj",
-      "packagesPath": "/Users/apanfilov/.nuget/packages/",
-      "outputPath": "/Users/apanfilov/source/DbUserConversations/obj/",
+      "projectPath": "C:\\cygwin64\\home\\snowy\\source\\DbUserConversations\\DbUserConversations.csproj",
+      "packagesPath": "C:\\Users\\snowy\\.nuget\\packages\\",
+      "outputPath": "C:\\cygwin64\\home\\snowy\\source\\DbUserConversations\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/apanfilov/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\snowy\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3414,6 +3414,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -3478,7 +3483,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/Users/apanfilov/dotnet/sdk/8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
