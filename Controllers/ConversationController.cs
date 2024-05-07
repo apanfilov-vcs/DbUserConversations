@@ -35,9 +35,9 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> GetConversationById(string id)
+        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> GetConversationWithMessagesById(string id)
         {
-            var serviceRequest = await _conversationService.GetConversationById(User, id);
+            var serviceRequest = await _conversationService.GetConversationWithMessagesById(User, id);
 
             if (serviceRequest.Success is false)
             {

@@ -157,7 +157,7 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetConversationDto>> GetConversationById(ClaimsPrincipal claimsPrincipal, string id)
+        public async Task<ServiceResponse<GetConversationDto>> GetConversationWithMessagesById(ClaimsPrincipal claimsPrincipal, string id)
         {
             var serviceResponse = new ServiceResponse<GetConversationDto>();
 

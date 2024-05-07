@@ -11,7 +11,7 @@ namespace DbUserConversations.Services
     public interface IConversationService
     {
         Task<ServiceResponse<List<GetConversationDto>>> GetConversations(ClaimsPrincipal claimsPrincipal);
-        Task<ServiceResponse<GetConversationDto>> GetConversationById(ClaimsPrincipal claimsPrincipal, string id);
+        Task<ServiceResponse<GetConversationDto>> GetConversationWithMessagesById(ClaimsPrincipal claimsPrincipal, string id);
         Task<ServiceResponse<GetConversationDto>> AddConversation(ClaimsPrincipal claimsPrincipal);
         Task<ServiceResponse<GetConversationDto>> AddUserToConversationById(ClaimsPrincipal claimsPrincipal, string conversationId, string userId);
         Task<ServiceResponse<GetConversationDto>> UpdateConversationNameById(ClaimsPrincipal claimsPrincipal, string id, string name);
