@@ -35,8 +35,9 @@ namespace DbUserConversations.Services
                     throw new Exception($"User with id '{claimId}' not found.");
                 }
 
-                var dbMessages = await _dbContext.Messages.ToListAsync();
-                var dbMessage = dbMessages.FirstOrDefault(m => m.Id == messageId);
+                var dbMessage = await _dbContext.Messages
+                    .Include(m => m.ToConversation)
+                    .FirstOrDefaultAsync(m => m.Id == messageId);
 
                 if (dbMessage is null)
                 {
@@ -51,7 +52,7 @@ namespace DbUserConversations.Services
                 serviceResponse.Data = _mapper.Map<GetMessageDto>(dbMessage);
                 serviceResponse.Message = $"Deleting message with id '{messageId}'.";
 
-                dbMessages.Remove(dbMessage);
+                _dbContext.Messages.Remove(dbMessage);
 
                 await _dbContext.SaveChangesAsync();
 
