@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DbUserConversations.Common;
 using DbUserConversations.DTOs;
 using DbUserConversations.Models;
 using DbUserConversations.Services;
@@ -48,10 +47,10 @@ namespace DbUserConversations.Controllers
             return Ok(serviceRequest);
         }
 
-        [HttpGet("GetLoggedInUser")]
+        [HttpGet("GetCurrentUser")]
         public async Task<ActionResult<ServiceResponse<GetUserConversationDto>>> GetLoggedInUser()
         {
-            var serviceRequest = await _userService.GetLoggedInUser(User);
+            var serviceRequest = await _userService.GetCurrentUser(User);
 
             if (serviceRequest.Success is false)
             {
@@ -61,26 +60,10 @@ namespace DbUserConversations.Controllers
             return Ok(serviceRequest);
         }
 
-        // Due to adding registration to api, the AddUser action on the UserController has been disabled.
-        // Only enable it on an admin features controller.
-
-        // [HttpPost("AddUser")]
-        // public async Task<ActionResult<ServiceResponse<GetUserDto>>> AddUser(string name)
-        // {
-        //     var serviceRequest = await _userService.AddUser(name);
-
-        //     if (serviceRequest.Success is false)
-        //     {
-        //         return BadRequest(serviceRequest);
-        //     }
-
-        //     return Ok(serviceRequest);
-        // }
-
-        [HttpPut("UpdateUserNameById")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUserNameById(string id, string name)
+        [HttpPut("UpdateCurrentUserName")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUserNameById(string name)
         {
-            var serviceRequest = await _userService.UpdateUserNameById(User, id, name);
+            var serviceRequest = await _userService.UpdateCurrentUserName(User, name);
 
             if (serviceRequest.Success is false)
             {
@@ -90,10 +73,10 @@ namespace DbUserConversations.Controllers
             return Ok(serviceRequest);
         }
 
-        [HttpDelete("DeleteUserById")]
-        public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUserById(string id)
+        [HttpDelete("DeleteCurrentUser")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUserById()
         {
-            var serviceRequest = await _userService.DeleteUserById(User, id);
+            var serviceRequest = await _userService.DeleteCurrentUser(User);
 
             if (serviceRequest.Success is false)
             {
