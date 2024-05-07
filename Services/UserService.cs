@@ -173,7 +173,7 @@ namespace DbUserConversations.Services
                 }
 
                 // Check if username is not already taken to prevent login errors
-                var dbQuery = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == name);
+                var dbQuery = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name.ToLower() == name.ToLower());
 
                 if (dbQuery is not null)
                 {
