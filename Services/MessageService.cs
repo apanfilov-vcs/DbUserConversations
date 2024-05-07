@@ -130,8 +130,10 @@ namespace DbUserConversations.Services
                     throw new Exception($"User with id '{claimId}' not found.");
                 }
 
-                var dbMessages = await _dbContext.Messages.ToListAsync();
-                var dbMessage = dbMessages.FirstOrDefault(m => m.Id == messageId);
+                // var dbMessages = await _dbContext.Messages.ToListAsync();
+                var dbMessage = await _dbContext.Messages
+                    .Include(m => m.ToConversation)
+                    .FirstOrDefaultAsync(m => m.Id == messageId);
 
                 if (dbMessage is null)
                 {
