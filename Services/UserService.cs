@@ -8,7 +8,6 @@ using DbUserConversations.Models;
 using DbUserConversations.DTOs;
 using AutoMapper;
 using System.Security.Claims;
-using DbUserConversations.Common;
 
 namespace DbUserConversations.Services
 {
@@ -22,51 +21,24 @@ namespace DbUserConversations.Services
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> AddUser(string name)
+        public async Task<ServiceResponse<GetUserDto>> DeleteCurrentUser(ClaimsPrincipal claimsPrincipal)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
 
             try
             {
-                var user = new User(name);
-                
-                _dbContext.Users.Add(user);
-                await _dbContext.SaveChangesAsync();
+                var claimId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+                var claimUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == claimId);
 
-                serviceResponse.Data = _mapper.Map<GetUserDto>(user);
-                serviceResponse.Message = $"Successfully added user '{name}' to database.";
-            }
-            catch (Exception ex)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
-            }
-
-            return serviceResponse;
-        }
-
-        public async Task<ServiceResponse<GetUserDto>> DeleteUserById(ClaimsPrincipal claimsPrincipal, string id)
-        {
-            var serviceResponse = new ServiceResponse<GetUserDto>();
-
-            try
-            {
-                if (AuthenticationFunctions.IsAuthorizedToModifyUser(claimsPrincipal, id) is false)
+                if (claimUser is null)
                 {
-                    throw new Exception("Not authorized to modify user with id other than your own.");
+                    throw new Exception($"User with id '{claimId}' not found.");
                 }
 
-                var dbUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+                serviceResponse.Data = _mapper.Map<GetUserDto>(claimUser);
+                serviceResponse.Message = $"Deleting user with id '{claimId}'.";
 
-                if (dbUser is null)
-                {
-                    throw new Exception($"User with id '{id}' not found.");
-                }
-
-                serviceResponse.Data = _mapper.Map<GetUserDto>(dbUser);
-                serviceResponse.Message = $"Found user with id '{id}'.";
-
-                _dbContext.Users.Remove(dbUser);
+                _dbContext.Users.Remove(claimUser);
 
                 await _dbContext.SaveChangesAsync();
 
@@ -81,7 +53,7 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> GetLoggedInUser(ClaimsPrincipal claimsPrincipal)
+        public async Task<ServiceResponse<GetUserDto>> GetCurrentUser(ClaimsPrincipal claimsPrincipal)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
 
@@ -115,8 +87,7 @@ namespace DbUserConversations.Services
 
             try
             {
-                var dbUser = await _dbContext.Users
-                    .FirstOrDefaultAsync(u => u.Id == id);
+                var dbUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 
                 if (dbUser is null)
                 {
@@ -161,38 +132,26 @@ namespace DbUserConversations.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> UpdateUserNameById(ClaimsPrincipal claimsPrincipal, string id, string name)
+        public async Task<ServiceResponse<GetUserDto>> UpdateCurrentUserName(ClaimsPrincipal claimsPrincipal, string name)
         {
             var serviceResponse = new ServiceResponse<GetUserDto>();
 
             try
             {
-                if (AuthenticationFunctions.IsAuthorizedToModifyUser(claimsPrincipal, id) is false)
+                var claimId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+                var claimUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == claimId);
+
+                if (claimUser is null)
                 {
-                    throw new Exception("Not authorized to modify user with id other than your own.");
+                    throw new Exception($"User with id '{claimId}' not found.");
                 }
 
-                // Check if username is not already taken to prevent login errors
-                var dbQuery = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name.ToLower() == name.ToLower());
-
-                if (dbQuery is not null)
-                {
-                    throw new Exception($"User with name '{name}' already exists.");
-                }
-
-                var dbUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
-
-                if (dbUser is null)
-                {
-                    throw new Exception($"User with id '{id}' not found.");
-                }
-
-                dbUser.Name = name;
+                claimUser.Name = name;
 
                 await _dbContext.SaveChangesAsync();
 
-                serviceResponse.Data = _mapper.Map<GetUserDto>(dbUser);
-                serviceResponse.Message = $"Changed name of user with id '{id}'.";
+                serviceResponse.Data = _mapper.Map<GetUserDto>(claimUser);
+                serviceResponse.Message = $"Changed name of user with id '{claimId}'.";
             }
             catch (Exception ex)
             {

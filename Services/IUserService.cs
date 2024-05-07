@@ -12,9 +12,8 @@ namespace DbUserConversations.Services
     {
         Task<ServiceResponse<List<GetUserDto>>> GetUsers();
         Task<ServiceResponse<GetUserDto>> GetUserById(string id);
-        Task<ServiceResponse<GetUserDto>> GetLoggedInUser(ClaimsPrincipal claimsPrincipal);
-        Task<ServiceResponse<GetUserDto>> AddUser(string name);
-        Task<ServiceResponse<GetUserDto>> UpdateUserNameById(ClaimsPrincipal claimsPrincipal, string id, string name);
-        Task<ServiceResponse<GetUserDto>> DeleteUserById(ClaimsPrincipal claimsPrincipal, string id);
+        Task<ServiceResponse<GetUserDto>> GetCurrentUser(ClaimsPrincipal claimsPrincipal);
+        Task<ServiceResponse<GetUserDto>> UpdateCurrentUserName(ClaimsPrincipal claimsPrincipal, string name);
+        Task<ServiceResponse<GetUserDto>> DeleteCurrentUser(ClaimsPrincipal claimsPrincipal);
     }
 }
