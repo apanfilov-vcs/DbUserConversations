@@ -17,13 +17,17 @@ following:
 * Asynchronous server calls to allow multiple client requests to be handled simultaneously
 
 ## How to compile, run, and publish this project on .NET Core
-1. Go to https://dotnet.microsoft.com/en-us/download and download the .NET SDK, or run `sudo apt-get install dotnet8` on Linux.
-2. Clone this repository.
-3. Open a terminal session in your clone of this project and run `dotnet build` to compile project assets and download dependencies. 
-4. Run `dotnet run` to run this project on a localhost.
-5. Run `dotnet publish` to publish this project into a deployable folder/docker container.
+1. Go to https://dotnet.microsoft.com/en-us/download and download the .NET SDK, or
+   run `sudo apt-get install dotnet8` on Linux.
+3. Clone this repository.
+4. Open a terminal session in your clone of this project and run `dotnet build` to compile
+   project assets and download dependencies. 
+6. Run `dotnet run` to run this project on a localhost.
+7. Run `dotnet publish` to publish this project into a deployable folder/docker container.
 
 See more on the .NET CLI at https://learn.microsoft.com/en-us/dotnet/core/tools/
 
 
-This API is meant to be simple, so that you can get started with using it right away. If you would like to add new features, feel free to fork this repository or submit a pull request. 
+This API is meant to be simple, so that you can get started with using it right away. 
+If you would like to add new features, feel free to fork this repository or submit 
+a pull request. 
