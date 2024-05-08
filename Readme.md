@@ -19,7 +19,8 @@ This project is a Rest API that serves as a backend for any chat app YOU feel li
 3. Open a terminal session in your clone of this project and run `dotnet build` to compile project assets and download dependencies. 
 4. Run `dotnet run` to run this project on a localhost.
 5. Run `dotnet publish` to publish this project into a deployable folder/docker container.
-```See more on the .NET CLI at https://learn.microsoft.com/en-us/dotnet/core/tools/```
+
+See more on the .NET CLI at https://learn.microsoft.com/en-us/dotnet/core/tools/
 
 
 This API is meant to be simple, so that you can get started with using it right away. If you would like to add new features, feel free to fork this repository or submit a pull request. 
