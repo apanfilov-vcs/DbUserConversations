@@ -2,7 +2,10 @@
 
 ## A fully-functional Rest API written in C# for a messaging app's backend logic
 
-This project is a Rest API that serves as a backend for any chat app YOU feel like making. Written with only C#, this program runs fast and gives you complete control over your data. Not only that, but it also includes and allows you to do all of the following:
+This project is a Rest API that serves as a backend for any chat app YOU feel like
+making. Written with only C#, this program runs fast and gives you complete control
+over your data. Not only that, but it also includes and allows you to do all of the
+following:
 
 * Create user accounts with passwords hashed securely and stored in an SQLite database
 * Request JWTs from server to provide secure authentication when logging in from a client
