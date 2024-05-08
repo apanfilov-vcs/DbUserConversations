@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj": {}
+    "/Users/apanfilov/source/MessagingApi/DbUserConversations.csproj": {}
   },
   "projects": {
-    "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj": {
+    "/Users/apanfilov/source/MessagingApi/DbUserConversations.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj",
+        "projectUniqueName": "/Users/apanfilov/source/MessagingApi/DbUserConversations.csproj",
         "projectName": "DbUserConversations",
-        "projectPath": "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj",
+        "projectPath": "/Users/apanfilov/source/MessagingApi/DbUserConversations.csproj",
         "packagesPath": "/Users/apanfilov/.nuget/packages/",
-        "outputPath": "/Users/apanfilov/source/DbUserConversations/obj/",
+        "outputPath": "/Users/apanfilov/source/MessagingApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/apanfilov/.nuget/NuGet/NuGet.Config"

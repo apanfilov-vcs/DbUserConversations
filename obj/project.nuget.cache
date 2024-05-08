@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "07EFL51vrO5WrkZwX63I+q71FcnhbnZLjVDVNMgXAh5DvHafmuJsQxHMaYSA2UdPZqzbILsDmM8ImBVekOz2Kg==",
+  "dgSpecHash": "MagnquLh5qwj9mBoRow1vpQ5cdzD7N2Twfgod1FRn0paK6QkfRmpHVLm3GhkEbIAtYhkJVOsX5dfrvIxwNaaVg==",
   "success": true,
-  "projectFilePath": "/Users/apanfilov/source/DbUserConversations/DbUserConversations.csproj",
+  "projectFilePath": "/Users/apanfilov/source/MessagingApi/DbUserConversations.csproj",
   "expectedPackageFiles": [
     "/Users/apanfilov/.nuget/packages/automapper/13.0.1/automapper.13.0.1.nupkg.sha512",
     "/Users/apanfilov/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
