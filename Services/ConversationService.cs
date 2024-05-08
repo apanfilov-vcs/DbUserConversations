@@ -21,7 +21,7 @@ namespace DbUserConversations.Services
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<GetConversationDto>> AddConversation(ClaimsPrincipal claimsPrincipal)
+        public async Task<ServiceResponse<GetConversationDto>> AddConversation(ClaimsPrincipal claimsPrincipal, string name)
         {
             var serviceResponse = new ServiceResponse<GetConversationDto>();
 
@@ -35,7 +35,16 @@ namespace DbUserConversations.Services
                     throw new Exception($"User with id '{userId}' not found.");
                 }
 
-                var dbConversation = new Conversation("New Conversation");
+                Conversation dbConversation;
+
+                if (name == string.Empty)
+                {
+                    dbConversation = new Conversation("New Conversation");
+                }
+                else
+                {
+                    dbConversation = new Conversation(name);
+                }
 
                 _dbContext.Conversations.Add(dbConversation);
                 dbConversation.Users.Add(dbUser);
