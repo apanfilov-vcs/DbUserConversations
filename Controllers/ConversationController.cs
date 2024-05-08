@@ -48,9 +48,9 @@ namespace DbUserConversations.Controllers
         }
 
         [HttpPost("AddConversation")]
-        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> AddConversation()
+        public async Task<ActionResult<ServiceResponse<GetConversationDto>>> AddConversation(string name)
         {
-            var serviceRequest = await _conversationService.AddConversation(User);
+            var serviceRequest = await _conversationService.AddConversation(User, name);
             
             if (serviceRequest.Success is false)
             {
