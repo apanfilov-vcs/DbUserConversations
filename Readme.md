@@ -27,6 +27,14 @@ following:
 
 See more on the .NET CLI at https://learn.microsoft.com/en-us/dotnet/core/tools/
 
+## How to set up development database
+1. Install .NET CLI (Instructions above).
+2. Open .NET CLI at this project's root.
+3. Install the dotnet-ef tool for running EntityFramework database migrations with
+   `dotnet tool install --global dotnet-ef`
+4. Update/setup the database with `dotnet ef database update`
+> Without making these changes, you will not be able to save any data to the development database
+>  while in the development launch configuration.
 
 This API is meant to be simple, so that you can get started with using it right away. 
 If you would like to add new features, feel free to fork this repository or submit 
